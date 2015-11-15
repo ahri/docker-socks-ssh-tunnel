@@ -1,0 +1,5 @@
+tunnel:
+    image: ahri/socks-ssh-tunnel
+    command: user host port
+    ports:
+        - "1080:1080"
