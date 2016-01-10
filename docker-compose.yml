@@ -3,3 +3,4 @@ tunnel:
     command: user host port
     ports:
         - "1080:1080"
+    restart: always

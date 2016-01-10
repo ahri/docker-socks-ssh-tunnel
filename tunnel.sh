@@ -11,7 +11,10 @@ user="$1"
 host="$2"
 port="$3"
 
-ssh-keygen -f "$HOME/.ssh/id_rsa" -N '' > /dev/null
+if [ ! -f "$HOME/.ssh/id_rsa" ]; then
+    ssh-keygen -f "$HOME/.ssh/id_rsa" -N '' > /dev/null
+fi
+
 cat "$HOME/.ssh/id_rsa.pub"
 
 while :; do
