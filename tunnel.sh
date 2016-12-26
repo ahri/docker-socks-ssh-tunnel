@@ -11,21 +11,27 @@ user="$1"
 host="$2"
 port="$3"
 
-if [ ! -f "$HOME/.ssh/id_rsa" ]; then
-    ssh-keygen -f "$HOME/.ssh/id_rsa" -N '' > /dev/null
+# https://blog.g3rt.nl/upgrade-your-ssh-keys.html
+private_key="$HOME/.ssh/id_ed25519"
+if [ ! -f "$private_key" ]; then
+	ssh-keygen -o -a 100 -t ed25519 -N '' -f "$private_key" > /dev/null
 fi
 
-cat "$HOME/.ssh/id_rsa.pub"
+cat "$private_key.pub"
 
 while :; do
 	ssh \
+		-C \
+		-N \
 		-o UserKnownHostsFile=/dev/null \
 		-o StrictHostKeyChecking=no \
 		-D 0.0.0.0:1080 \
-		-N \
+		-l "$user" \
 		-p "$port" \
-		"$user@$host" \
+		"$host" \
 		|| true
+
+	echo DISCONNECTED
 
 	sleep 10
 done
